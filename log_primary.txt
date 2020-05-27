@@ -1,0 +1,58 @@
+(base) david@mylaptop:~$ ssh -i "udacity.pem" ubuntu@ec2-35-175-186-233.compute-1.amazonaws.com
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-1065-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Wed May 27 20:15:43 UTC 2020
+
+  System load:  0.0               Processes:           88
+  Usage of /:   19.5% of 7.69GB   Users logged in:     0
+  Memory usage: 32%               IP address for eth0: 10.1.10.43
+  Swap usage:   0%
+
+
+63 packages can be updated.
+37 updates are security updates.
+
+
+Last login: Wed May 27 19:56:22 2020 from 82.158.133.79
+ubuntu@ip-10-1-10-43:~$ mysql  -h udacity.cylkn9tgdgsw.us-east-1.rds.amazonaws.com -P 3306 -u admin -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 284
+Server version: 5.7.22 Source distribution
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database udacity;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use udacity;
+Database changed
+mysql> CREATE TABLE IF NOT EXISTS tasks (     task_id INT AUTO_INCREMENT PRIMARY KEY,     title VARCHAR(255) NOT NULL,     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO tasks (task_id, title) VALUES (1, "create database");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO tasks (title) VALUES ("create table");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from tasks;
++---------+-----------------+---------------------+
+| task_id | title           | created_at          |
++---------+-----------------+---------------------+
+|       1 | create database | 2020-05-27 20:22:34 |
+|       2 | create table    | 2020-05-27 20:23:10 |
++---------+-----------------+---------------------+
+2 rows in set (0.00 sec)
+
+mysql> 

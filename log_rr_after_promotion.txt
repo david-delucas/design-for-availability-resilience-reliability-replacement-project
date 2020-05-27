@@ -1,0 +1,64 @@
+(base) david@unicorn:~$ ssh -i "udacity_ohio.pem" ubuntu@ec2-3-135-9-86.us-east-2.compute.amazonaws.com
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-1065-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Wed May 27 21:37:51 UTC 2020
+
+  System load:  0.0               Processes:           88
+  Usage of /:   19.5% of 7.69GB   Users logged in:     0
+  Memory usage: 32%               IP address for eth0: 10.2.11.158
+  Swap usage:   0%
+
+
+63 packages can be updated.
+37 updates are security updates.
+
+
+Last login: Wed May 27 21:34:21 2020 from 82.158.133.79
+ubuntu@ip-10-2-11-158:~$ mysql  -h udacityohiorpl.cvaqmxzyz7uq.us-east-2.rds.amazonaws.com -P 3306 -u admin -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 6
+Server version: 5.7.22-log Source distribution
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use udacity;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select * from tasks;
++---------+-----------------+---------------------+
+| task_id | title           | created_at          |
++---------+-----------------+---------------------+
+|       1 | create database | 2020-05-27 20:22:34 |
+|       2 | create table    | 2020-05-27 20:23:10 |
+|       3 | insert rows     | 2020-05-27 20:45:25 |
++---------+-----------------+---------------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO tasks (title) VALUES ("create table");
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from tasks;
++---------+-----------------+---------------------+
+| task_id | title           | created_at          |
++---------+-----------------+---------------------+
+|       1 | create database | 2020-05-27 20:22:34 |
+|       2 | create table    | 2020-05-27 20:23:10 |
+|       3 | insert rows     | 2020-05-27 20:45:25 |
+|       4 | create table    | 2020-05-27 21:38:08 |
++---------+-----------------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql> 

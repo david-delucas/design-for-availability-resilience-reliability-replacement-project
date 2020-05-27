@@ -1,18 +1,16 @@
 # Data durability and recovery
 
-In this project you will create highly available solutions to common use cases.  You will build a Multi-AvailabilityZone, Multi-Region database and show how to use it in multiple geographically separate AWS regions.  You will also build a website hosting solution that is versioned so that any data destruction and accidents can be quickly and easily undone.
+This project purpose is to create highly available solutions to common use cases. First build a Multi-AvailabilityZone, Multi-Region database and show how to use it in multiple geographically separate AWS regions.  Besides a website hosting solution is built that is versioned so that any data destruction and accidents can be quickly and easily undone.
 
 ## Getting Started
 
-To get started, clone this repo.  Aside from instructions, it contains a CloudFormation script to build an AWS VPC with public and private subnets.  It also contains an example website that you will host in an AWS S3 bucket in your account.
+To get started, this porject contains a CloudFormation script to build an AWS VPC with public and private subnets.  It also contains a website to be hosted in an AWS S3 bucket.
 
 ## Project Instructions
 ### Cloud formation
 In this project, you will use the AWS CloudFormation to create Virtual Private Clouds. CloudFormation is an AWS service that allows you to create "infrastructure as code". This allows you to define the infrastructure you'd like to create in code, just like you do with software. This has the benefits of being able to share your infrastructure in a common language, use source code control systems to version your infrastructure and allows for documenting and reviewing of infrastructure and infrastructure proposed changes.
 
-CloudFormation allows you to use a configuration file written in a YAML file to automate the creation of AWS resources such as VPCs. In this project, you will use a pre-made CloudFormation template to get you started. This will allow you to create some of the infrastructure that you'll need without spending a lot of time learning details that are beyond the scope of this course.
-
-You can find the YAML file in the GitHub repo: https://github.com/udacity/nd063-c2-design-for-availability-resilience-reliability-replacement-project-starter-template/blob/master/cloudformation/vpc.yaml
+CloudFormation allows you to use a configuration file written in a YAML file to automate the creation of AWS resources such as VPCs. 
 
 In order to build a VPC from the YAML file, follow the steps:
 
