@@ -1,47 +1,63 @@
-
-
 Describing the achievable Recovery Time Objective (RTO) and Recovery Point Objective (RPO) for this Multi-AZ, 
 multi-region database in terms of:
 
-- Minimum RTO for a single AZ outage
-- Minimum RTO for a single region outage
-- Minimum RPO for a single AZ outage
-- Minimum RPO for a single region outage
+1.1 Minimum RTO for a single AZ outage
+1.2 Minimum RPO for a single AZ outage
+
+2.1 Minimum RTO for a single region outage
+2.2 Minimum RPO for a single region outage
 
 
-RTO for recovery with an RDS Single-AZ instance failure can vary from minutes to hours. 
-The duration depends on the size of the database and the failure and recovery approach required.
+0. For RTO and RPO for single AZ outage in case of single-AZ deployment (not directly asked for but as baseline):
+
+  - RTO for recovery with an RDS Single-AZ instance failure can vary from minutes to hours. 
+    The duration depends on the size of the database and the failure and recovery approach required.
+
+  - RPO (the targeted amount of time during which data is at risk for loss in the event of a failure) for 
+    recovery with an RDS Single-AZ instance failure is typically 5 minutes (the interval required for 
+    copying transaction logs to Amazon S3), but it can vary. With Single-AZ the only live copy of your data is 
+    the EBS volume that holds the data for the instance. While EBS uses mirroring of data under the covers to 
+    provide durability and availability, there are several scenarios where you would have no choice other than 
+    to recover from backups. In this case you might want to apply the 5 minute log backup interval as your RPO.
 
 
-RPO for recovery with an RDS Single-AZ instance failure is typically 5 minutes (the interval required for 
-copying transaction logs to Amazon S3), but it can vary. You can confirm this by calling 
-RDS:describe-db-instances:LatestRestorableTime. This service returns the latest time to which a database 
-can be restored with point-in-time restore.
+1. For RTO and RPO for single AZ outage in case of multi-AZ deployment.
 
-With Single-AZ the only live copy of your data is the EBS volume that holds the data for the instance. 
-While EBS uses mirroring of data under the covers to provide durability and availability, there are several 
-scenarios where you would have no choice other than to recover from backups. In this case you might want to 
-apply the 5 minute log backup interval as your RPO.
+  - Multi-AZ is expected as having the targeted amount of time for a recovery to complete in the event of 
+    failure (RTO) of 1-2 minutes and an RPO of 0, since they lose no data on any common failure. 
+    Again putting this into more traditional terms, even if a natural disaster were to destroy the data center housing 
+    the primary, the secondary would take over with no data loss. So assuming an RPO of 0 makes sense.
 
-source: https://aws.amazon.com/es/blogs/database/amazon-rds-under-the-hood-single-az-instance-recovery/
+  - With Multi-AZ the odds of data loss go way down because you have a separate synchronous copy of the volume 
+    being maintained in a separate data center (AZ). If your primary instance fails, you failover to the secondary 
+    instance with no data loss. There are far fewer scenarios where recreating the database from backup would be 
+    required, but there are still a few. Since volume-level replication is used, a corruption on the primary's 
+    volume may be replicated to the secondary's volume. And as rare as this scenario is, it would necessitate 
+    recovery from backups. I believe most customers think of Multi-AZ as having an RTO of 1-2 minutes and an RPO 
+    of 0, since they lose no data on any common failure. 
 
 
-The RDS Multi-AZ configuration is the recommended approach for production environments due to its ability to 
-support low RTO (recovery time objective) and RPO (recovery point objective) requirements. RTO is the targeted 
-amount of time for a recovery to complete in the event of failure. RPO is the targeted amount of time during 
-which data is at risk for loss in the event of a failure.
+2. For RTO and RPO for single region failure in multi-region deployment: 
 
-Multi-AZ is expected as having an RTO of 1-2 minutes and an RPO of 0, since they lose no data on any common failure. 
-Again putting this into more traditional terms, even if a natural disaster were to destroy the data center housing 
-the primary, the secondary would take over with no data loss. So assuming an RPO of 0 makes sense.
+  - In general a read replica in a different AWS Region will improve the disaster recovery capabilities.
+  - If one region fails, we have to promote the read replica to take place of master database. This requires 
+    manual intervention. As automated backups are limited to a single AWS Region while manual snapshots 
+    and Read Replicas are supported across multiple Regions.
+  - There exists asynchronous replication in the case of multi-region deployment. So in the case of a single region 
+    failure, RTO and RPO are slightly greater.
+  - When you perform a cross-Region restore of a DB snapshot, first you copy the snapshot to the desired Region. 
+    Then, you can restore the DB snapshot to a new DB instance.
+  - In fact to cover this scenario the use of a cross-Region Read Replica can help ensure that you get back up 
+    and running if you experience a regional availability issue, as read replicas can be created in a different Region 
+    than the source database.
+  - Here the read replica lag is an important factor, which is the time the replica is behind the source database. And
+    this impact the recovery and the RTO and RPO values. If the amount of data being replicated is high then this will
+    be impacted by the network latency.
+  - Because Read Replicas have a running DB instance, the time required to recover after a disaster (RTO) is lower. 
+    However, using Read Replicas in this way is generally a more expensive option than using automated backups or database snapshots.
 
-With Multi-AZ the odds of data loss go way down because you have a separate synchronous copy of the volume 
-being maintained in a separate data center (AZ). If your primary instance fails, you failover to the secondary 
-instance with no data loss. There are far fewer scenarios where recreating the database from backup would be 
-required, but there are still a few. Since volume-level replication is used, a corruption on the primary's 
-volume may be replicated to the secondary's volume. And as rare as this scenario is, it would necessitate 
-recovery from backups. I believe most customers think of Multi-AZ as having an RTO of 1-2 minutes and an RPO 
-of 0, since they lose no data on any common failure. 
 
-sources: https://aws.amazon.com/es/blogs/database/amazon-rds-under-the-hood-multi-az/
+
+Sources: https://aws.amazon.com/es/blogs/database/amazon-rds-under-the-hood-single-az-instance-recovery/
+         https://aws.amazon.com/es/blogs/database/amazon-rds-under-the-hood-multi-az/
          https://forums.aws.amazon.com/thread.jspa?threadID=310192
