@@ -58,7 +58,9 @@ multi-region database in terms of:
   - To quantify the time Promote the read replica, which is the action required in this case, during the exercise it was
     performed a read replica promotion to master database and it took around 5-10 minutes. In this case the replication
     from former master ceases and the read replica becomes a standalone database instance. So this interval 5-10 minutes 
-    corresponds to the expected RTO for a single region failure. And RPO is still 0, as there is no data lost on any common failure. 
+    corresponds to the expected RTO for a single region failure. 
+  - RPO for single region outage: In this case, due to the time taken to promote a read replica and asynchronous replication, 
+    RPO will be 10 minutes to several hours.
 
 
 
