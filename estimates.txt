@@ -55,6 +55,10 @@ multi-region database in terms of:
     be impacted by the network latency.
   - Because Read Replicas have a running DB instance, the time required to recover after a disaster (RTO) is lower. 
     However, using Read Replicas in this way is generally a more expensive option than using automated backups or database snapshots.
+  - To quantify the time Promote the read replica, which is the action required in this case, during the exercise it was
+    performed a read replica promotion to master database and it took around 5-10 minutes. In this case the replication
+    from former master ceases and the read replica becomes a standalone database instance. So this interval 5-10 minutes 
+    corresponds to the expected RTO for a single region failure. And RPO is still 0, as there is no data lost on any common failure. 
 
 
 
