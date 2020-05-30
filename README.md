@@ -4,15 +4,14 @@ This project purpose is to create highly available solutions to common use cases
 
 ## Getting Started
 
-To get started, this porject contains a CloudFormation script to build an AWS VPC with public and private subnets.  It also contains a website to be hosted in an AWS S3 bucket.
+This project contains a CloudFormation script to build an AWS VPC with public and private subnets.  It also contains a website to be hosted in an AWS S3 bucket.
 
-## Project Instructions
 ### Cloud formation
-In this project, you will use the AWS CloudFormation to create Virtual Private Clouds. CloudFormation is an AWS service that allows you to create "infrastructure as code". This allows you to define the infrastructure you'd like to create in code, just like you do with software. This has the benefits of being able to share your infrastructure in a common language, use source code control systems to version your infrastructure and allows for documenting and reviewing of infrastructure and infrastructure proposed changes.
+First we use the AWS CloudFormation to create Virtual Private Clouds. CloudFormation is an AWS service that allows you to create "infrastructure as code". This allows you to define the infrastructure you'd like to create in code, just like you do with software. This has the benefits of being able to share your infrastructure in a common language, use source code control systems to version your infrastructure and allows for documenting and reviewing of infrastructure and infrastructure proposed changes.
 
 CloudFormation allows you to use a configuration file written in a YAML file to automate the creation of AWS resources such as VPCs. 
 
-In order to build a VPC from the YAML file, follow the steps:
+In order to build a VPC from the YAML file, the following stepa are required:
 
 1. Services -> CloudFormation
 2. Create stack “With new resources (standard)”
@@ -36,7 +35,7 @@ Once the CloudFormation Stack has completed, you can look at the "Resources" tab
 The "Outputs" tab shows you custom output from the CloudFormation Stack that is labeled and described for you.  These descriptions are custom descriptions that were added to the CloudFormation template and make it easier for you to find specific values that have been created as a part of the CloudFormation stack.  Here, you can find the VPC ID that has been created, the subnet IDs including which subnets are public and which are private, and the Security Groups that have been created and a description of each.
 
 ### Part 1
-Complete the following steps:
+
 ### Data durability and recovery
 In order to achieve the highest levels of durability and availability in AWS you must take advantage of multiple AWS regions. 
 1. Pick two AWS regions. An active region and a standby region.
